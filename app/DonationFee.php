@@ -16,6 +16,7 @@ class DonationFee
 
     private $donation;
     private $commissionPercentage;
+    private const FIXED_FEE = 50;
 
     public function __construct($donation, $commissionPercentage)
     {
@@ -43,6 +44,24 @@ class DonationFee
 
     public function getAmountCollected()
     {
-        return $this->donation * (1 - ($this->commissionPercentage/100));
+        return $this->donation - $this->getFixedAndCommissionFeeAmount();
+    }
+
+    public function getFixedAndCommissionFeeAmount(){
+        $fixedAndCommissionFeeAmount = $this->getCommissionAmount() + self::FIXED_FEE;
+
+        return $fixedAndCommissionFeeAmount <= 500? $fixedAndCommissionFeeAmount : 500;
+    }
+
+    public function getSummary()
+    {
+        $summary = [];
+        $summary['donation'] = $this->donation;
+        $summary['fixedFee'] = self::FIXED_FEE;
+        $summary['commission'] = $this->getCommissionAmount();
+        $summary['fixedAndCommission'] = $this->getFixedAndCommissionFeeAmount();
+        $summary['amountCollected'] = $this->getAmountCollected();
+
+        return $summary;
     }
 }
