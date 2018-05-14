@@ -16,7 +16,8 @@ class DonationFee
 
     private $donation;
     private $commissionPercentage;
-    private const FIXED_FEE = 50;
+    const FIXED_FEE = 50;
+    const MAX_FEE = 500;
 
     public function __construct($donation, $commissionPercentage)
     {
@@ -50,7 +51,7 @@ class DonationFee
     public function getFixedAndCommissionFeeAmount(){
         $fixedAndCommissionFeeAmount = $this->getCommissionAmount() + self::FIXED_FEE;
 
-        return $fixedAndCommissionFeeAmount <= 500? $fixedAndCommissionFeeAmount : 500;
+        return $fixedAndCommissionFeeAmount <= self::MAX_FEE ? $fixedAndCommissionFeeAmount : self::MAX_FEE;
     }
 
     public function getSummary()
