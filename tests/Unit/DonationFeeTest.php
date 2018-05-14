@@ -65,4 +65,39 @@ class DonationFeeTest extends TestCase
 
         $commissionOutOfBounds = new DonationFee(100, -2);
     }
+
+    public function testExceptionDonationTooLow(){
+        // La classe doit renvoyer une erreur si donation n'est pas supérieure ou égale à 100
+
+        $this->expectException(Exception::class);
+
+        $donationTooLow = new DonationFee(2, 10);
+
+    }
+
+    public function testExceptionDonationNotInteger(){
+
+        $this->expectException(Exception::class);
+
+        $donationNotInteger = new DonationFee(124.12, 10);
+    }
+
+    public function testFixedAndCommissionFeeAmountGetter(){
+        // Etant donné une donation de 100 et commission de 10%
+        $donationFees = new DonationFee(100, 10);
+
+        // Lorsque qu'on appel la méthode getCommissionAmount()
+        $actual = $donationFees->getFixedAndCommissionFeeAmount();
+
+        // Alors la Valeur de la commission doit être de 10
+        $expected = 15;
+        $this->assertEquals($expected, $actual);
+
+        // Test sur de nouvelles valeurs :
+        $donationFees = new DonationFee(200, 15);
+        $actual = $donationFees->getFixedAndCommissionFeeAmount();
+        $expected = 35;
+
+        $this->assertEquals($expected, $actual);
+    }
 }
