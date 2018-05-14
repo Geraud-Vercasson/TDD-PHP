@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\DonationFee;
+use Mockery\Exception;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -25,5 +26,43 @@ class DonationFeeTest extends TestCase
         // Alors la Valeur de la commission doit être de 10
         $expected = 10;
         $this->assertEquals($expected, $actual);
+
+        // Test sur de nouvelles valeurs :
+        $donationFees = new DonationFee(200, 15);
+        $actual = $donationFees->getCommissionAmount();
+        $expected = 30;
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testCollectedAmountGetter() {
+
+        // Etant donné une donation de 100 et commission de 10%
+        $donationFees = new DonationFee(100, 10);
+
+        // Lorsque qu'on appel la méthode getCommissionAmount()
+        $actual = $donationFees->getAmountCollected();
+
+        // Alors la Valeur du montant perçu doit être de 90
+        $expected = 90;
+        $this->assertEquals($expected, $actual);
+
+    }
+
+    public function testExceptionCommissionPercentageTooHigh(){
+
+        // La classe doit renvoyer une erreur si commissionPercentage n'est pas inférieure à 30 %
+
+        $this->expectException(Exception::class);
+
+        $commissionOutOfBounds = new DonationFee(100,35);
+    }
+
+    public function testExceptionCommissionPercentageTooLow(){
+        // La classe doit renvoyer une erreur si commissionPercentage n'est pas supérieure à 0 %
+
+        $this->expectException(Exception::class);
+
+        $commissionOutOfBounds = new DonationFee(100, -2);
     }
 }
