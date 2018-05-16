@@ -14,14 +14,6 @@ namespace App{
  *
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  */
-	class User extends \Eloquent {}
 }
 
-namespace App{
-/**
- * App\Project
- *
- */
-	class Project extends \Eloquent {}
-}
 

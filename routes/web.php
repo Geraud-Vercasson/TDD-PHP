@@ -14,7 +14,14 @@
 Route::get('/', function () {
     return view('welcome');
 });
+Auth::routes();
 
-Route::get('/project', function(){
-    return view('project');
-});
+Route::get('/project', 'ProjectController@all')->name('projects');
+
+Route::get('/project/add', 'ProjectController@add');
+Route::post('/project/create', 'ProjectController@create');
+Route::post('/project/edit/{project}', 'ProjectController@update');
+
+Route::get('project/{project}', 'ProjectController@show');
+
+Route::get('/home', 'HomeController@index')->name('home');
